@@ -24,7 +24,7 @@ public class Json {
 
         defaultObjectMapper.registerModule(new JavaTimeModule());
         defaultObjectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-        
+
         return defaultObjectMapper;
     }
 
