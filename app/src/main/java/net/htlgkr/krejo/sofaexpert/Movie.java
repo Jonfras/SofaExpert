@@ -5,20 +5,26 @@ import android.widget.ImageView;
 import com.squareup.picasso.Picasso;
 
 import java.time.LocalDate;
+import java.util.Date;
 
 public class Movie {
+    private static final String TOP_URL = "http://image.tmdb.org/t/p/w154";
+
     private String title;
     private double vote_average;
     private String poster_path;
-    private LocalDate releaseDate;
+    private LocalDate release_date;
     private String overview;
 
-    public Movie(String title, double vote_average, String poster_path, LocalDate releaseDate, String overview) {
+    public Movie(String title, double vote_average, String poster_path, LocalDate release_date, String overview) {
         this.title = title;
         this.vote_average = vote_average;
         this.poster_path = poster_path;
-        this.releaseDate = releaseDate;
+        this.release_date = release_date;
         this.overview = overview;
+    }
+
+    public Movie() {
     }
 
     public String getTitle() {
@@ -45,12 +51,12 @@ public class Movie {
         this.poster_path = poster_path;
     }
 
-    public LocalDate getReleaseDate() {
-        return releaseDate;
+    public LocalDate getRelease_date() {
+        return release_date;
     }
 
-    public void setReleaseDate(LocalDate releaseDate) {
-        this.releaseDate = releaseDate;
+    public void setRelease_date(LocalDate releaseDate) {
+        this.release_date = releaseDate;
     }
 
     public String getOverview() {
@@ -59,5 +65,14 @@ public class Movie {
 
     public void setOverview(String overview) {
         this.overview = overview;
+    }
+
+    @Override
+    public String toString() {
+        return title + " " + vote_average + " " + poster_path + " " + release_date + "!";
+    }
+
+    public String createUrl(){
+        return TOP_URL + poster_path;
     }
 }

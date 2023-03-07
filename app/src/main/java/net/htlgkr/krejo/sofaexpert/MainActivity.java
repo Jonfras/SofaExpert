@@ -2,40 +2,64 @@ package net.htlgkr.krejo.sofaexpert;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.GridView;
 import android.widget.ImageView;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JsonNode;
-import com.squareup.picasso.Picasso;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
 import java.io.IOException;
 
 public class MainActivity extends AppCompatActivity {
 
-    ImageView imageView;
-    private final String topUrl = "http://image.tmdb.org/t/p/w154";
+    private MovieManager movieManager;
+    private GridView gridView;
+    private MovieAdapter movieAdapter;
 
+    @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
         JsonNode jsonNode = null;
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.registerModule(new JavaTimeModule());
+        objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+
         try {
-           jsonNode = Json.parse(getAssets().open("movies.json"));
+            movieManager = objectMapper.readValue(getAssets().open("movies.json"), MovieManager.class);
+            System.out.println(movieManager);
         } catch (IOException e) {
-            System.err.println("jsonNode konnte nicht erstellt werden");
+            e.printStackTrace();
         }
 
+        gridView = findViewById(R.id.gridView);
+        movieAdapter = new MovieAdapter(getApplicationContext(), R.layout.grid_view_layout, movieManager);
 
-        Movie movie = null;
-        try {
-            movie = Json.fromJson(jsonNode, Movie.class);
-        } catch (JsonProcessingException e) {
-            System.err.println("object konnte nicht erstellt werden");
-        }
+        gridView.setAdapter(movieAdapter);
 
-        System.out.println(jsonNode + " " +movie);
+        gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                Intent intent = new Intent(getApplicationContext(), DetailActivity.class);
+                startActivity(intent);
+            }
+        });
+
+
+
+
+
+
     }
 }

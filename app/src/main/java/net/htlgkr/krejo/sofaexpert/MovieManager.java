@@ -8,11 +8,15 @@ public class MovieManager {
     private int total_pages;
     private List<Movie> results;
 
+
     public MovieManager(int page, int total_results, int total_pages, List<Movie> results) {
         this.page = page;
         this.total_results = total_results;
         this.total_pages = total_pages;
         this.results = results;
+    }
+
+    public MovieManager() {
     }
 
     public int getPage() {
@@ -45,5 +49,19 @@ public class MovieManager {
 
     public void setResults(List<Movie> results) {
         this.results = results;
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder resultString = new StringBuilder("MovieManager{" +
+                "page=" + page +
+                ", total_results=" + total_results +
+                ", total_pages=" + total_pages +
+                ", results: \n");
+        for (Movie m :
+                results) {
+            resultString.append(m.toString());
+        }
+        return resultString.toString();
     }
 }
