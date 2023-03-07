@@ -2,6 +2,10 @@ package net.htlgkr.krejo.sofaexpert;
 
 import android.widget.ImageView;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.squareup.picasso.Picasso;
 
 import java.time.LocalDate;
@@ -74,5 +78,13 @@ public class Movie {
 
     public String createUrl(){
         return TOP_URL + poster_path;
+    }
+
+    public static Movie getMovieFromJsonString(String json) throws JsonProcessingException {
+        ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.registerModule(new JavaTimeModule());
+        objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+
+        return objectMapper.readValue(json, Movie.class);
     }
 }

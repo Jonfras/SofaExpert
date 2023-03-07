@@ -52,7 +52,11 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 Intent intent = new Intent(getApplicationContext(), DetailActivity.class);
-                startActivity(intent);
+                try {
+                    startActivity(intent.putExtra("movie", objectMapper.writeValueAsString(movieManager.getResults().get(i))));
+                } catch (JsonProcessingException e) {
+                    System.err.println("New Intent couldn't be started...");
+                }
             }
         });
 
